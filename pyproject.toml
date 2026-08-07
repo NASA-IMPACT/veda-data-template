@@ -1,0 +1,47 @@
+[project]
+name = "veda-data-template"
+version = "0.1.0"
+description = "Configuration and scripts for publishing VEDA STAC data"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "pre-commit==4.6.1",
+  "pystac[validation]==1.8.4",
+  "pytest==7.4.2",
+]
+scripts = [
+  "pyyaml==6.0.1",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.ruff]
+line-length = 88
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # Pyflakes
+    "I",    # isort
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "PTH",  # flake8-use-pathlib
+    "RET",  # flake8-return
+    "TID",  # flake8-tidy-imports
+    "TC",   # flake8-type-checking
+    "ISC",  # flake8-implicit-str-concat
+    "ICN",  # flake8-import-conventions
+    "BLE",  # flake8-blind-except
+]
+ignore = [
+  "BLE001",  # Blind Exceptions
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = "dynamic"

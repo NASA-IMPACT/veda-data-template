@@ -1,14 +1,14 @@
-#! /usr/bin/env python
 """
 This file creates a minimal <collection>.data.mdx file
 from the input dataset config json file
 Dependency: `dataset.mdx` file
 """
 
-import yaml
-import os
 import json
 import sys
+from pathlib import Path
+
+import yaml
 
 
 def create_frontmatter(input_data):
@@ -91,37 +91,37 @@ def create_frontmatter(input_data):
         json_data["layers"].append(layer)
 
     # Convert json to yaml for frontmatter
-    yaml_data = yaml.dump(json_data, sort_keys=False)
-
-    return yaml_data
+    return yaml.dump(json_data, sort_keys=False)
 
 
 def safe_open_w(path):
     """Open "path" for writing, creating any parent directories as needed."""
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    return open(path, "w")
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    return Path.open(path, "w")
 
 
 if __name__ == "__main__":
-    input_data = json.load(open(sys.argv[1]))
+    with Path.open(sys.argv[1]) as f:
+        input_data = json.load(f)
+
     dataset_config = create_frontmatter(input_data)
     front_matter = f"---\n{dataset_config}---\n"
 
     # Path to the existing file
-    curr_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(curr_directory, "dataset.mdx")
+    curr_directory = Path(__file__).parent
+    file_path = curr_directory / "dataset.mdx"
 
     # Read the existing content of the file
-    with open(file_path, "r") as file:
+    with Path.open(file_path) as file:
         existing_content = file.read()
 
     # Combine front matter and existing content
     new_content = front_matter + existing_content
 
     # Write the combined content back to the file
-    output_filepath = os.path.join(
-        curr_directory,
-        f"../ingestion-data/dataset-mdx/{input_data['collection']}.data.mdx",
+    output_filepath = Path(
+        curr_directory
+        / f"../ingestion-data/dataset-mdx/{input_data['collection']}.data.mdx",
     )
     with safe_open_w(output_filepath) as ofile:
         ofile.write(new_content)
