@@ -2,6 +2,28 @@
 
 This repository houses data and config used to create STAC records to be published to the veda STAC catalog.
 
+## Python setup
+
+This repository uses [uv](https://docs.astral.sh/uv/) and `pyproject.toml` for dependency management.
+
+Install dependencies:
+
+```bash
+uv sync
+```
+
+Run linting and formatting hooks:
+
+```bash
+uv run pre-commit run --all-files
+```
+
+Run script tooling dependencies:
+
+```bash
+uv run --group scripts ./scripts/generate_mdx.py <dataset-config.json>
+```
+
 ## Repository layout
 
 The repo follows the following folder structure:
@@ -73,19 +95,19 @@ These are the configs used to transfer assets from the dev bucket (`ghgc-data-st
 
 #### Description of each field
 
-| Field              | Description                                      |
-|--------------------|--------------------------------------------------|
-| `collection`         | The collection id for the collection that the items need to be ingested to                                                 |
-| `bucket`             | The s3 bucket where the item files are located                                                 |
-| `prefix`             | The s3 prefix under which to search for the files                                                 |
-| `filename_regex`     | The regex pattern that the files to be discovered should match                                                 |
-| `id_regex`           | Specifies in regex what part of the filename (usually the datetime) should be used to group assets into item. Example: if the filenames are `asset1_20151201.tif`, `asset2_20151201.tif`, `asset1_20161201.tif`, `asset2_20161201.tif`; the item should be based on the datetime part, hence it'd be `".*_(.*).tif$"`. The part should be specified using round brackets. The is also the part of the filenames that will be used to form the item id, together with the `id_template` field.                                                  |
-| `id_template`        | This is a python f-string formatted string that is used to define the `id` of the STAC item. It's used together with the value of `id_regex`. So, going off of the example above, if the `id_template` is `eccodarwin-{}`, then the two item `id`s would be `eccodarwin-20151201` and `eccodarwin-20161201`                                                    |
-| `datetime_range`     | This is used to extract the datetime range from the filename. Valid values are `day`, `month` and `year`. Example: if the filename has `20160104` in it, and `datetime_range` is `day` - the `start_datetime` and `end_datetime` are the start and end of the day. For `month`, they are the start and end of the month and so on.                                                   |
-| `<asset_name>`       | An `id` for the asset                                   |
-| `assets.<asset_name>.title`       | A title for the asset                                   |
-| `assets.<asset_name>.description` | A description for the asset                                   |
-| `assets.<asset_name>.regex`       | The regex pattern that matches a filename to its respective asset                                   |
+Field                             | Description
+----------------------------------|--------------------------------------------------
+`collection`                      | The collection id for the collection that the items need to be ingested to
+`bucket`                          | The s3 bucket where the item files are located
+`prefix`                          | The s3 prefix under which to search for the files
+`filename_regex`                  | The regex pattern that the files to be discovered should match
+`id_regex`                        | Specifies in regex what part of the filename (usually the datetime) should be used to group assets into item. Example: if the filenames are `asset1_20151201.tif`, `asset2_20151201.tif`, `asset1_20161201.tif`, `asset2_20161201.tif`; the item should be based on the datetime part, hence it'd be `".*_(.*).tif$"`. The part should be specified using round brackets. The is also the part of the filenames that will be used to form the item id, together with the `id_template` field.
+`id_template`                     | This is a python f-string formatted string that is used to define the `id` of the STAC item. It's used together with the value of `id_regex`. So, going off of the example above, if the `id_template` is `eccodarwin-{}`, then the two item `id`s would be `eccodarwin-20151201` and `eccodarwin-20161201`
+`datetime_range`                  | This is used to extract the datetime range from the filename. Valid values are `day`, `month` and `year`. Example: if the filename has `20160104` in it, and `datetime_range` is `day` - the `start_datetime` and `end_datetime` are the start and end of the day. For `month`, they are the start and end of the month and so on.
+`<asset_name>`                    | An `id` for the asset
+`assets.<asset_name>.title`       | A title for the asset
+`assets.<asset_name>.description` | A description for the asset
+`assets.<asset_name>.regex`       | The regex pattern that matches a filename to its respective asset
 
 #### config archive
 
