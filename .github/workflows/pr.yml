@@ -147,7 +147,7 @@ jobs:
 
               echo "Publishing $config_type: $collection_id"
 
-              response=$(uv run --group scripts python "$script_to_run" "$file" "staging")
+              response=$(uv run --locked --group scripts python "$script_to_run" "$file" "staging")
               echo "Processed file: $file"
               status_code=$(echo "$response" | jq -r '.statusCode' | head -n1)
               echo "Status Code: $status_code"
@@ -303,7 +303,7 @@ jobs:
           echo $PUBLISHED_COLLECTION_FILES
           collection_ids=""
           for file in ${PUBLISHED_COLLECTION_FILES}; do
-            collection_id=$(uv run --group scripts python ./scripts/generate_mdx.py "$file")
+            collection_id=$(uv run --locked --group scripts python ./scripts/generate_mdx.py "$file")
             collection_id=$(echo "$collection_id" | sed 's/^["\s]*//;s/["\s]*$//')
             echo "Processed collection ID: $collection_id"
             collection_ids="$collection_ids$collection_id,"

@@ -85,7 +85,7 @@ jobs:
             fi
 
             echo "Promoting $config_type ($collection_id) to production"
-            response=$(uv run --group scripts python "$script_to_run" "$file" "production")
+            response=$(uv run --locked --group scripts python "$script_to_run" "$file" "production")
 
             echo "Processed file: $file"
             status_code=$(echo "$response" | jq -r '.statusCode')
