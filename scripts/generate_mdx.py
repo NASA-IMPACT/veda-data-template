@@ -97,11 +97,11 @@ def create_frontmatter(input_data):
 def safe_open_w(path):
     """Open "path" for writing, creating any parent directories as needed."""
     Path(path).parent.mkdir(parents=True, exist_ok=True)
-    return Path.open(path, "w")
+    return Path(path).open("w")
 
 
 if __name__ == "__main__":
-    with Path.open(sys.argv[1]) as f:
+    with Path(sys.argv[1]).open() as f:
         input_data = json.load(f)
 
     dataset_config = create_frontmatter(input_data)
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     file_path = curr_directory / "dataset.mdx"
 
     # Read the existing content of the file
-    with Path.open(file_path) as file:
+    with Path(file_path).open() as file:
         existing_content = file.read()
 
     # Combine front matter and existing content

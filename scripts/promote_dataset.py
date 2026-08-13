@@ -113,7 +113,7 @@ def promote_to_production(payload):
 
 if __name__ == "__main__":
     try:
-        with Path.open(sys.argv[1]) as file:
+        with Path(sys.argv[1]).open() as file:
             _input = json.load(file)
             stage = sys.argv[2]
             discovery_items = _input.get("discovery_items")

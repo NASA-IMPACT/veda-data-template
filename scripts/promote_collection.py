@@ -66,7 +66,7 @@ def trigger_collection_dag(payload: dict[str, Any], stage: str):
 
 if __name__ == "__main__":
     try:
-        with Path.open(sys.argv[1]) as file:
+        with Path(sys.argv[1]).open() as file:
             input_data = json.load(file)
             stage = sys.argv[2]
             dag_payload = {"conf": input_data}
