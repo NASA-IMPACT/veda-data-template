@@ -119,9 +119,9 @@ if __name__ == "__main__":
     new_content = front_matter + existing_content
 
     # Write the combined content back to the file
-    output_filepath = Path(
+    output_filepath = (
         curr_directory
-        / f"../ingestion-data/dataset-mdx/{input_data['collection']}.data.mdx",
+        / f"../ingestion-data/dataset-mdx/{input_data['collection']}.data.mdx"
     )
     with safe_open_w(output_filepath) as ofile:
         ofile.write(new_content)
