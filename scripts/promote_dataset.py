@@ -117,6 +117,9 @@ if __name__ == "__main__":
             _input = json.load(file)
             stage = sys.argv[2]
             discovery_items = _input.get("discovery_items")
+            validated_discovery_items = [
+                validate_discovery_item_config(item) for item in discovery_items
+            ]
             transfer = _input.get("transfer")
             if transfer is not None and not isinstance(transfer, bool):
                 raise ValueError(
