@@ -15,19 +15,19 @@ class MissingFieldError(Exception):
 def validate_discovery_item_config(item: dict[str, Any]) -> dict[str, Any]:
     if "bucket" not in item:
         raise MissingFieldError(
-            "Missing required field 'bucket' in discovery item: {item}"
+            f"Missing required field 'bucket' in discovery item: {item}"
         )
     if "discovery" not in item:
         raise MissingFieldError(
-            "Missing required field 'discovery' in discovery item: {item}"
+            f"Missing required field 'discovery' in discovery item: {item}"
         )
     if "filename_regex" not in item:
         raise MissingFieldError(
-            "Missing required field 'filename_regex' in discovery item: {item}"
+            f"Missing required field 'filename_regex' in discovery item: {item}"
         )
     if "prefix" not in item:
         raise MissingFieldError(
-            "Missing required field 'prefix' in discovery item: {item}"
+            f"Missing required field 'prefix' in discovery item: {item}"
         )
     return item
 
@@ -92,7 +92,7 @@ def promote_to_production(payload):
         "Authorization": "Basic " + api_token,
     }
 
-    payload["conf"]["transfer"] = True
+    payload["conf"].setdefault("transfer", False)
     body = {
         **payload,
         "dag_run_id": f"{promotion_dag}-{uuid.uuid4()}",
@@ -120,6 +120,11 @@ if __name__ == "__main__":
             validated_discovery_items = [
                 validate_discovery_item_config(item) for item in discovery_items
             ]
+            transfer = _input.get("transfer")
+            if transfer is not None and not isinstance(transfer, bool):
+                raise ValueError(
+                    f"Invalid value for 'transfer': {transfer!r}. Must be a boolean."
+                )
             dag_payload = {"conf": _input}
             if stage == "production":
                 promote_to_production(dag_payload)
