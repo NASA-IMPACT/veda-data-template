@@ -285,6 +285,8 @@ jobs:
     environment: staging
     needs: ['mdx-pr-flag-evaluator', 'publish-new-datasets']
     permissions:
+      contents: read
+      issues: write
       pull-requests: write
     steps:
       - name: Checkout code
