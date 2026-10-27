@@ -15,6 +15,10 @@ jobs:
   check-conditions:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
     steps:
       - name: Print PR number
         run: |
@@ -63,6 +67,7 @@ jobs:
     needs: check-conditions
     permissions:
       actions: write
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0

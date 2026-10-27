@@ -34,7 +34,8 @@ jobs:
       comment_id: ${{ steps.init-comment.outputs.COMMENT_ID }}
       has_new_files_to_promote: ${{ steps.changed-files.outputs.all_changed_files_count != 0 }}
     permissions:
-      pull-requests: write
+      contents: read
+      issues: write
     steps:
       - name: Checkout code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -315,9 +316,6 @@ jobs:
           collection_ids=${collection_ids%,}
           echo "Final collection_ids: $collection_ids"
           echo "collection_ids=${collection_ids}" >> $GITHUB_ENV
-
-
-
 
       - name: Debug - Print files to promote
         run: |
